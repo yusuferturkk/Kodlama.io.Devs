@@ -20,18 +20,18 @@ namespace Application.Features.ProgrammingLanguages.Queries.GetListProgrammingLa
 
         public class GetListProgrammingLanguageQueryHandler:IRequestHandler<GetListProgrammingLanguageQuery, ProgrammingLanguageListModel>
         {
-            private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
+            private readonly IProgrammingLanguageRepository _repository;
             private readonly IMapper _mapper;
 
-            public GetListProgrammingLanguageQueryHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper)
+            public GetListProgrammingLanguageQueryHandler(IProgrammingLanguageRepository repository, IMapper mapper)
             {
-                _programmingLanguageRepository = programmingLanguageRepository;
+                _repository = repository;
                 _mapper = mapper;
             }
 
             public async Task<ProgrammingLanguageListModel> Handle(GetListProgrammingLanguageQuery request, CancellationToken cancellationToken)
             {
-                IPaginate<ProgrammingLanguage> programmingLanguages = await _programmingLanguageRepository.
+                IPaginate<ProgrammingLanguage> programmingLanguages = await _repository.
                     GetListAsync(index: request.PageRequest.Page, size: request.PageRequest.PageSize);
                 ProgrammingLanguageListModel mappedProgrammingLanguageListModel = _mapper.Map<ProgrammingLanguageListModel>(programmingLanguages);
                 return mappedProgrammingLanguageListModel;

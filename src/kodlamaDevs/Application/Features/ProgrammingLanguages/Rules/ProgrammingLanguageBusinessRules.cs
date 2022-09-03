@@ -12,16 +12,16 @@ namespace Application.Features.ProgrammingLanguages.Rules
 {
     public class ProgrammingLanguageBusinessRules
     {
-        private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
+        private readonly IProgrammingLanguageRepository _repository;
 
-        public ProgrammingLanguageBusinessRules(IProgrammingLanguageRepository programmingLanguageRepository)
+        public ProgrammingLanguageBusinessRules(IProgrammingLanguageRepository repository)
         {
-            _programmingLanguageRepository = programmingLanguageRepository;
+            _repository = repository;
         }
 
         public async Task ProgrammingLanguageNameCanNotDuplicatedWhenInserted(string name)
         {
-            IPaginate<ProgrammingLanguage> result = await _programmingLanguageRepository.GetListAsync(p => p.Name == name);
+            IPaginate<ProgrammingLanguage> result = await _repository.GetListAsync(p => p.Name == name);
             if (result.Items.Any()) throw new BusinessException("Programming Language name exists.");
         }
 

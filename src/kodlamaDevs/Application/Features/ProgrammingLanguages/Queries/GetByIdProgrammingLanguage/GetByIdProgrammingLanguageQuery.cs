@@ -2,10 +2,12 @@
 using Application.Features.ProgrammingLanguages.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Persistence.Repositories;
 using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,23 +20,23 @@ namespace Application.Features.ProgrammingLanguages.Queries.GetByIdProgrammingLa
 
         public class GetByIdProgrammingLanguageQueryHandler:IRequestHandler<GetByIdProgrammingLanguageQuery, ProgrammingLanguageGetByIdDto>
         {
-            private readonly IProgrammingLanguageRepository _programmingLanguageRepository;
+            private readonly IProgrammingLanguageRepository _repository;
             private readonly IMapper _mapper;
-            private readonly ProgrammingLanguageBusinessRules _programmingLanguageBusinessRules;
+            private readonly ProgrammingLanguageBusinessRules _rules;
 
-            public GetByIdProgrammingLanguageQueryHandler(IProgrammingLanguageRepository programmingLanguageRepository, IMapper mapper, 
-                ProgrammingLanguageBusinessRules programmingLanguageBusinessRules)
+            public GetByIdProgrammingLanguageQueryHandler(IProgrammingLanguageRepository repository, IMapper mapper, 
+                ProgrammingLanguageBusinessRules rules)
             {
-                _programmingLanguageRepository = programmingLanguageRepository;
+                _repository = repository;
                 _mapper = mapper;
-                _programmingLanguageBusinessRules = programmingLanguageBusinessRules;
+                _rules = rules;
             }
 
             public async Task<ProgrammingLanguageGetByIdDto> Handle(GetByIdProgrammingLanguageQuery request, CancellationToken cancellationToken)
             {
-                ProgrammingLanguage programmingLanguage = await _programmingLanguageRepository.GetAsync(p => p.Id == request.Id);
-                
-                _programmingLanguageBusinessRules.ProgrammingLanguageShouldExistWhenRequested(programmingLanguage);
+                ProgrammingLanguage programmingLanguage = await _repository.GetAsync(p => p.Id == request.Id);
+
+                _rules.ProgrammingLanguageShouldExistWhenRequested(programmingLanguage);
 
                 ProgrammingLanguageGetByIdDto programmingLanguageGetByIdDto = _mapper.Map<ProgrammingLanguageGetByIdDto>(programmingLanguage);
                 return programmingLanguageGetByIdDto;
