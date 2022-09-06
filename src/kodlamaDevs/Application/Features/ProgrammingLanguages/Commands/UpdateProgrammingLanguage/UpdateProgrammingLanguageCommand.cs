@@ -33,15 +33,16 @@ namespace Application.Features.ProgrammingLanguages.Commands.UpdateProgrammingLa
 
             public async Task<UpdatedProgrammingLanguageDto> Handle(UpdateProgrammingLanguageCommand request, CancellationToken cancellationToken)
             {
-                ProgrammingLanguage? programmingLanguage = await _repository.GetAsync(b => b.Id == request.Id);
+                ProgrammingLanguage? programmingLanguage = await _repository.GetAsync(x => x.Id == request.Id);
 
-                _rules.ProgrammingLanguageShouldExistWhenRequested(programmingLanguage);
+                await _rules.ProgrammingLanguageShouldExistWhenRequested(programmingLanguage);
                 await _rules.ProgrammingLanguageNameCanNotDuplicatedWhenInserted(request.Name);
 
-                _mapper.Map(request, programmingLanguage);
+                programmingLanguage.Name = request.Name;
 
                 ProgrammingLanguage updatedProgrammingLanguage = await _repository.UpdateAsync(programmingLanguage);
                 UpdatedProgrammingLanguageDto updatedProgrammingLanguageDto = _mapper.Map<UpdatedProgrammingLanguageDto>(updatedProgrammingLanguage);
+                
 
                 return updatedProgrammingLanguageDto;
             }
