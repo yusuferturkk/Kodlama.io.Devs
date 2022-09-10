@@ -38,8 +38,7 @@ namespace Application.Features.GithubProfiles.Commands.UpdateGithubProfile
                 await _rules.GithubProfileShouldExistWhenRequested(githubProfile);
                 await _rules.GithubProfileUrlCanNotBeDuplicatedWhenInserted(request.ProfileUrl);
 
-                GithubProfile mappedGithubProfile = _mapper.Map<GithubProfile>(request);
-                GithubProfile updatedGithubProfile = await _repository.UpdateAsync(mappedGithubProfile);
+                GithubProfile updatedGithubProfile = await _repository.UpdateAsync(githubProfile);
                 UpdatedGithubProfileDto result = _mapper.Map<UpdatedGithubProfileDto>(updatedGithubProfile);
                 return result;
             }

@@ -27,7 +27,7 @@ namespace Application.Features.GithubProfiles.Rules
 
         public async Task GithubProfileShouldExistWhenRequested(GithubProfile githubProfile)
         {
-            if (githubProfile == null) throw new BusinessException("Requested github profile does not exist.");
+            if (githubProfile == null) throw new BusinessException("Requested user does not exist.");
         }
     }
 }

@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Add([FromBody] CreateGithubProfileCommand command)
         {
             CreatedGithubProfileDto result = await Mediator.Send(command);
-            return Ok(result);
+            return Created("", result);
         }
 
         [HttpPost("Delete/{Id}")]

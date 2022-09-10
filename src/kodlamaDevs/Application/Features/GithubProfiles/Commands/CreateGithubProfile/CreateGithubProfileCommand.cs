@@ -33,7 +33,6 @@ namespace Application.Features.GithubProfiles.Commands.CreateGithubProfile
             public async Task<CreatedGithubProfileDto> Handle(CreateGithubProfileCommand request, CancellationToken cancellationToken)
             {
                 GithubProfile? githubProfile = await _repository.GetAsync(c => c.UserId == request.UserId);
-                githubProfile.ProfileUrl = request.ProfileUrl;
 
                 await _rules.GithubProfileShouldExistWhenRequested(githubProfile);
                 await _rules.GithubProfileUrlCanNotBeDuplicatedWhenInserted(request.ProfileUrl);
